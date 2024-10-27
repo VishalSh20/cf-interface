@@ -7,25 +7,12 @@ import { getContests } from "./controllers/contests.controller.js";
 
 const app = express();
 
-const allowedOrigins = ['http://localhost:3000', 'https://gs-code-solver.vercel.app'];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json({limit:"16kb"}));
 app.use(express.urlencoded({extended:true}));
-app.use('/problem',getProblem);
-app.use('/contest',getContestInfo);
-app.use('/problemset',getProblemSet);
-app.use('/contests',getContests);
+app.use('/api/v1/problem',getProblem);
+app.use('/api/v1/contest',getContestInfo);
+app.use('/api/v1/problemset',getProblemSet);
+app.use('/api/v1/contests',getContests);
 
 export {app};

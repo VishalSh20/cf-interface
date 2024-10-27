@@ -23,7 +23,7 @@ export default async function scrapeContestInfo(contestId){
             const nameElement = await driver.findElement(By.css(`table.problems > tbody > tr:nth-child(${i+1}) > td:nth-child(2) > div > div:first-child`));
             currProblem.name = await nameElement.getAttribute("innerText");
             const constraintElement = await driver.findElement(By.css(`table.problems > tbody > tr:nth-child(${i+1}) > td:nth-child(2) > div > div:nth-child(2)`));
-            currProblem.constraints = await constraintElement.getAttribute("innerText");
+            currProblem.constraints = (await constraintElement.getAttribute("innerText")).split('\n');
             const countElement = await driver.findElement(By.css(`table.problems > tbody > tr:nth-child(${i+1}) > td:nth-child(4)`));
             currProblem.acceptedCount = await countElement.getAttribute('innerText');
             currProblem.acceptedCount = Number(currProblem.acceptedCount.substr(currProblem.acceptedCount.indexOf("x")+1));
