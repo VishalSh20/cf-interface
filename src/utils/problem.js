@@ -1,32 +1,26 @@
 import { Builder, By, until } from 'selenium-webdriver';
 
 export default async function scrapeProblem(contestId,problemId) {
-    // Set up Selenium to use ChromeDriver
-    let driver =new Builder().forBrowser('chrome').build();
+    let driver;
 
     try {
-        // Navigate to the Codeforces problem page
-        await driver.get(`https://codeforces.com/contest/${contestId}/problem/${problemId}`);
-
-        // Wait for the page to load fully and the title to be available
+        driver = new Builder().forBrowser('chrome').build();
+        const requestURL = `https://codeforces.com/contest/${contestId}/problem/${problemId}`;
+        await driver.get(requestURL);
         await driver.wait(until.elementLocated(By.className('title')), 10000);
 
-        // give title
         const titleElement = await driver.findElement(By.className('title'));
         const title = await titleElement.getText();
 
-        // only the statement
         const problemStatementElement = await driver.findElement(By.css('.problem-statement > div:nth-child(2)'));
         const problemStatement = await problemStatementElement.getAttribute('innerText');
 
-        // getting input and output specification strings
         const inputSpecificationElement = await driver.findElement(By.className("input-specification"));
         const inputSpecification = await inputSpecificationElement.getAttribute('innerText');
         
         const outputSpecificationElement = await driver.findElement(By.className("output-specification"));
         const outputSpecification = await outputSpecificationElement.getAttribute('innerText');
         
-        // taking the sample testcases
         const sampleInputElements = await driver.findElements(By.css('.sample-test > .input > pre'));
         let sampleInputs = [];
         for(let i=0; i<sampleInputElements.length; i++){
@@ -46,7 +40,6 @@ export default async function scrapeProblem(contestId,problemId) {
            sampleTestCases.push({input:sampleInputs[i],output:sampleOutputs[i]});
         }
 
-        // getting the time and memory limit
         const timeLimitElement = await driver.findElement(By.className('time-limit'));
         const timeLimitText = await timeLimitElement.getText();
         let timeLimit = "";
@@ -64,13 +57,8 @@ export default async function scrapeProblem(contestId,problemId) {
                 memoryLimit += memoryLimitText[i];
         }
 
-        // console.log("Problem Title:", title);
-        // console.log("Problem Statement:", problemStatement);
-        // console.log("Time Limit:", timeLimit);
-        // console.log("Memory Limit:", memoryLimit);
-
-        // Return the scraped data
         return {
+            message:"OK",
            problem:{ title,
             problemStatement,
             inputSpecification,
@@ -78,12 +66,12 @@ export default async function scrapeProblem(contestId,problemId) {
             sampleTestCases,
             timeLimit:Number(timeLimit),
             memoryLimit:Number(memoryLimit)},
-            error:null
+           
         };
     } catch (error) {
         console.error("An error occurred:", error);
+        return {error:error.message}
     } finally {
-        // Close the browser
         await driver.quit();
     }
 }
