@@ -1,4 +1,4 @@
-import scrapeProblem from "../utils/problem.js";
+import scrapeProblem from "../utils/scrapeUtils/problem.js";
 import scrapeContestInfo from "../utils/scrapeUtils/contest.js";
 
 export async function getProblem(req,res){

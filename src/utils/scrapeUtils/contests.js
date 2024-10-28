@@ -1,10 +1,11 @@
 import { Browser, Builder,By,until } from "selenium-webdriver";
+import { chromeOptions } from "../scrapingConstants.js";
 
 export default async function scrapeContests(page=1,filterTypes="",filterRated="",filterSubstring=""){
     let driver;
     try {
-        driver = new Builder().forBrowser(Browser.CHROME).build();
-        const requestURL = `https://codeforces.com/contests/page/${page}`;
+        driver = new Builder().forBrowser(Browser.CHROME).setChromeOptions(chromeOptions).build();
+        let requestURL = `https://codeforces.com/contests/page/${page}`;
         let params = [];
         if(filterTypes)
             params.push(`filterTypes=${filterTypes}`);
@@ -13,7 +14,13 @@ export default async function scrapeContests(page=1,filterTypes="",filterRated="
         if(filterSubstring)
             params.push(`filterSubstring=${filterSubstring}`);
 
-        await driver.get(requestURL+'?'+params.join('&'));
+        requestURL = requestURL + '?' + params.join('&');
+        await driver.get(requestURL);
+
+        const urlLoaded = await driver.getCurrentUrl();
+        if(urlLoaded !== requestURL)
+            return {error:"Page not available - check the params passed"};
+
         await driver.wait(until.elementLocated(By.className('datatable')), 10000);
 
         const upcomingContestElements = await driver.findElements(By.css(".contestList>div>div>table>tbody>tr"));

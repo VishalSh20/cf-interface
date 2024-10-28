@@ -1,11 +1,17 @@
 import { Browser, Builder,By,until } from "selenium-webdriver";
+import {chromeOptions} from "../scrapingConstants.js";
 
 export default async function scrapeProblemSet(page=1,upperLimit=4000,lowerLimit=800,tags=[]){
     let driver;
     try {
-        driver = new Builder().forBrowser(Browser.CHROME).build();
+        driver = new Builder().forBrowser(Browser.CHROME).setChromeOptions(chromeOptions).build();
         const requestURL = `https://codeforces.com/problemset/page/${page}?tags=${tags.join(',')}${tags.length ? "," : ""}${lowerLimit}-${upperLimit}`;
         await driver.get(requestURL);
+
+        const urlLoaded = await driver.getCurrentUrl();
+        if(urlLoaded !== requestURL)
+            return {error:"Page not available - check the params passed"};
+
         await driver.wait(until.elementLocated(By.className('datatable')), 10000);
 
         const problemElements = await driver.findElements(By.css("table.problems > tbody > tr"));

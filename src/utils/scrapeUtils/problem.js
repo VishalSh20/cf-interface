@@ -1,12 +1,18 @@
-import { Builder, By, until } from 'selenium-webdriver';
+import { Browser, Builder, By, until } from 'selenium-webdriver';
+import {chromeOptions} from "../scrapingConstants.js"
 
 export default async function scrapeProblem(contestId,problemId) {
     let driver;
 
     try {
-        driver = new Builder().forBrowser('chrome').build();
+        driver = new Builder().forBrowser('chrome').setChromeOptions(chromeOptions).build();
         const requestURL = `https://codeforces.com/contest/${contestId}/problem/${problemId}`;
         await driver.get(requestURL);
+        
+        const urlLoaded = await driver.getCurrentUrl();
+        if(urlLoaded !== requestURL)
+            return {error:"Page not available - check problem id"};
+
         await driver.wait(until.elementLocated(By.className('title')), 10000);
 
         const titleElement = await driver.findElement(By.className('title'));

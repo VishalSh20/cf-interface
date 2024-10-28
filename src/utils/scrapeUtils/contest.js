@@ -1,10 +1,20 @@
 import { Browser, Builder,By,until } from "selenium-webdriver";
+import {chromeOptions} from "../scrapingConstants.js"
+import fs from 'fs';
+import { error } from "console";
 
 export default async function scrapeContestInfo(contestId){
     let driver;
     try {
-        driver = new Builder().forBrowser(Browser.CHROME).build();
-        await driver.get(`https://codeforces.com/contest/${contestId}`);
+        driver = new Builder().forBrowser(Browser.CHROME).setChromeOptions(chromeOptions).build();
+
+        const requestURL = `https://codeforces.com/contest/${contestId}`;
+        await driver.get(requestURL);
+
+        const urlLoaded = await driver.getCurrentUrl();
+        if(urlLoaded !== requestURL)
+            return {error:"Page not available - check contest id !!"}
+
         await driver.wait(until.elementLocated(By.className('datatable')), 10000);
 
         const titleElement = await driver.findElement(By.css("#sidebar > div:first-child > table > tbody > tr:first-child"));
