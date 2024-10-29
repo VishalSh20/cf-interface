@@ -51,8 +51,6 @@ export default async function scrapeProblemSet(page=1,upperLimit=4000,lowerLimit
         }
 
     } catch (error) {
-        const errorMessage = `Error occured while scraping: ${error.message}`
-        console.log(errorMessage);
         return {error:errorMessage};
     }
     finally{

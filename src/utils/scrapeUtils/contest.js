@@ -1,7 +1,5 @@
 import { Browser, Builder,By,until } from "selenium-webdriver";
 import {chromeOptions} from "../scrapingConstants.js"
-import fs from 'fs';
-import { error } from "console";
 
 export default async function scrapeContestInfo(contestId){
     let driver;
@@ -41,12 +39,10 @@ export default async function scrapeContestInfo(contestId){
         }
 
         return {
-            title,status,problems
+           message:"OK", contest:{title,status,problems}
         }
 
     } catch (error) {
-        const errorMessage = `Error occured while scraping: ${error.message}`
-        console.log(errorMessage);
         return {error:errorMessage};
     }
     finally{

@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  cf-interface-api:
+    build: .
+    ports:
+      - "4000:4000"  # Map local port 4000 to container port 4000
+    environment:
+      - PORT=4000    # Set the PORT environment variable
+    restart: always  # Optional: restart the container if it exits

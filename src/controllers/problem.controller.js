@@ -13,8 +13,8 @@ export async function getProblem(req,res){
      const contestScrapingResponse = await scrapeContestInfo(contestId);
      if(contestScrapingResponse.error)
         return res.status(500).json({error:contestScrapingResponse.error});
-     
-     if(contestScrapingResponse.problems.map(p => p.index).indexOf(problemId.toUpperCase()) === -1)
+
+     if(contestScrapingResponse.contest?.problems?.map(p => p.index).indexOf(problemId.toUpperCase()) === -1)
         return res.status(500).json({error:"Invalid Problem ID"});
  
      const problemScrapingResponse = await scrapeProblem(contestId,problemId);
@@ -25,7 +25,7 @@ export async function getProblem(req,res){
      res.status(500).json(problemScrapingResponse);
    } 
    catch (error) {
-     res.status(500).json(error.status || "Error occured while scraping the problem");
+     res.status(500).json(error.message || "Error occured while scraping the problem");
    }
    
 }

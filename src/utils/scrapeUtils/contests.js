@@ -1,20 +1,20 @@
 import { Browser, Builder,By,until } from "selenium-webdriver";
 import { chromeOptions } from "../scrapingConstants.js";
 
-export default async function scrapeContests(page=1,filterTypes="",filterRated="",filterSubstring=""){
+export default async function scrapeContests(page=1,filterTypes=[],filterRated="",filterSubstring=""){
     let driver;
     try {
         driver = new Builder().forBrowser(Browser.CHROME).setChromeOptions(chromeOptions).build();
-        let requestURL = `https://codeforces.com/contests/page/${page}`;
+        let requestURL = `https://codeforces.com/contests/page/${page}?complete=true`;
         let params = [];
         if(filterTypes)
-            params.push(`filterTypes=${filterTypes}`);
+            params.push(filterTypes.map(type => `filterTypes=${type}`).join('&'));
         if(filterRated)
             params.push(`filterRated=${filterRated}`);
         if(filterSubstring)
             params.push(`filterSubstring=${filterSubstring}`);
 
-        requestURL = requestURL + '?' + params.join('&');
+        requestURL = [requestURL,params.join('&')].join('&');
         await driver.get(requestURL);
 
         const urlLoaded = await driver.getCurrentUrl();

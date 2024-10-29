@@ -1,0 +1,3 @@
+export async function getIntro(req,res){
+    return res.status(200).send("Welcome to CF-Interface API ! CF-Interface is a simple tool that scrapes Codeforces data for you. Get information on upcoming contests, details for individual contests, problem descriptions, and problem sets—all in about 20-30 seconds.\n Check route /api/v1/routes to get info of routes.               Created by:Vishal Sharma\n(Github:github.com/VishalSh20/cf-interface\n X:x.com/Vish_DoesCode)");
+}
