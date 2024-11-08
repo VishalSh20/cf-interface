@@ -51,7 +51,7 @@ export default async function scrapeProblemSet(page=1,upperLimit=4000,lowerLimit
         }
 
     } catch (error) {
-        return {error:errorMessage};
+        return {error:error.message};
     }
     finally{
         await driver.quit();
