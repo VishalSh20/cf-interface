@@ -7,6 +7,7 @@ export default async function scrapeProblem(contestId,problemId) {
     try {
         driver = new Builder().forBrowser('chrome').setChromeOptions(chromeOptions).build();
         const requestURL = `https://codeforces.com/contest/${contestId}/problem/${problemId}`;
+        // console.log(requestURL);
         await driver.get(requestURL);
         
         const urlLoaded = await driver.getCurrentUrl();
@@ -64,15 +65,18 @@ export default async function scrapeProblem(contestId,problemId) {
         }
 
         return {
-            message:"OK",
-           problem:{ title,
+           message:"OK",
+           problem:{ 
+            contestId:Number(contestId),
+            problemId,
+            id:`${contestId}${problemId}`,
+            title:`${title.substring(title.indexOf('.')+1).trim()}`,
             problemStatement,
             inputSpecification,
             outputSpecification,
             sampleTestCases,
             timeLimit:Number(timeLimit),
-            memoryLimit:Number(memoryLimit)},
-           
+            memoryLimit:Number(memoryLimit)},   
         };
     } catch (error) {
         console.error("An error occurred:", error);
