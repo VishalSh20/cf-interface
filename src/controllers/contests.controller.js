@@ -8,13 +8,13 @@ export async function getContests(req,res) {
      if(filterRated && ["yes","no",""].indexOf(filterRated.toLowerCase()) === -1)
          return res.status(400).json({error:"filterRated should either be yes or no(empty string is also valid)"});
      
-     const contestScrapingOutput = await scrapeContests(page,filterTypes.map(type => type.toLowerCase()) ,filterRated?.toLowerCase(),filterSubstring);
+     const contestScrapingOutput = await scrapeContests(page, filterTypes?.map(type => type.toLowerCase()) ,filterRated?.toLowerCase(),filterSubstring);
      if(contestScrapingOutput.error)
          return res.status(500).json(contestScrapingOutput);
      else
          return res.status(200).json(contestScrapingOutput);
    } catch (error) {
-        return res.status(500).json({error:error.message || "Something went wrong while scraping contests!!"});
+        return res.status(500).json({error:error?.message || "Something went wrong while scraping contests!!"});
    }
 
 }

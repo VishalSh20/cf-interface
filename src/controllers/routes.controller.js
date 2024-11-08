@@ -32,6 +32,7 @@ export async function getRoutes(req,res) {
                 page:"Integer signifying the page number required",
                 upperLimit:"Integer denoting the upper rating limit for problems",
                 lowerLimit:"Integer denoting the lower rating limit for problems",
+                tags:"Specify the tags of the problem"
             }
         },
         healthcheck:{
