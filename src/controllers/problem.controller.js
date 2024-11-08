@@ -14,7 +14,7 @@ export async function getProblem(req,res){
      if(contestScrapingResponse.error)
         return res.status(500).json({error:contestScrapingResponse.error});
 
-     if(contestScrapingResponse.contest?.problems?.map(p => p.index).indexOf(problemId) === -1)
+     if(contestScrapingResponse.contest?.problems?.map(p => p.id).indexOf(problemId) === -1)
         return res.status(500).json({error:"Invalid Problem ID"});
  
      const problemScrapingResponse = await scrapeProblem(contestId.trim(),problemId.trim());
