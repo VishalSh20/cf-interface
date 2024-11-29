@@ -7,7 +7,7 @@ export default async function scrapeContestInfo(contestId){
         driver = new Builder().forBrowser(Browser.CHROME).setChromeOptions(chromeOptions).build();
 
         const requestURL = `https://codeforces.com/contest/${contestId}`;
-        // console.log(requestURL);
+        // console.log(requestURL);k
         await driver.get(requestURL);
 
         const urlLoaded = await driver.getCurrentUrl();

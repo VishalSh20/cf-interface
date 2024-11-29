@@ -10,13 +10,7 @@ import { getRoutes } from "./controllers/routes.controller.js";
 
 const app = express();
 
-app.use(cors(
-    {
-        origin:"*",
-        methods: ['GET', 'POST', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization']
-    }
-));
+app.use(cors());
 app.use(express.json({limit:"64kb"}));
 app.use(express.urlencoded({extended:true}));
 app.get('/api/v1/',getIntro);
